@@ -43,7 +43,7 @@ export default {
     }
 
     const requestBody = {
-      model: 'gpt-4.1',
+      model: 'gpt-6-astra',
       messages: userInput.messages,
       max_completion_tokens: 300,
     };
