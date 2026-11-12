@@ -9,9 +9,9 @@ L’Oréal is exploring the power of AI, and your job is to showcase what's poss
 
 ## ☁️ Cloudflare Note
 
-The chatbot sends its conversation to a Cloudflare Worker; the OpenAI API key must stay in the Worker secret and must never be added to the frontend.
+The chatbot sends its conversation to a Cloudflare Worker. Do not create a `secrets.js` file or put an API key in this public frontend; store the key as the Worker secret named `OPENAI_API_KEY`.
 
-1. Deploy the class-provided Worker and set its `OPENAI_API_KEY` secret in Cloudflare.
+1. Deploy `RESOURCE_cloudflare-worker.js` as your Cloudflare Worker and set its `OPENAI_API_KEY` secret in Cloudflare.
 2. In `script.js`, replace the example `WORKER_URL` with your class Worker URL.
 3. The frontend sends a `messages` array and displays the reply from `data.choices[0].message.content`.
 
