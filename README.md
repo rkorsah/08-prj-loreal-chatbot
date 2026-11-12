@@ -15,6 +15,6 @@ The chatbot sends its conversation to a Cloudflare Worker. Do not create a `secr
 2. In `script.js`, replace the example `WORKER_URL` with your class Worker URL.
 3. The frontend sends a `messages` array and displays the reply from `data.choices[0].message.content`.
 
-The chatbot keeps the conversation in the browser so follow-up questions can use earlier context. Its system prompt limits replies to L’Oréal beauty products and routines.
+The chatbot keeps the conversation in the browser so follow-up questions can use earlier context. Its system prompt covers L’Oréal products, beauty services, routines, and recommendations, and directs the assistant not to guess at location-specific availability or pricing.
 
 Enjoy building your L’Oréal beauty assistant! 💄

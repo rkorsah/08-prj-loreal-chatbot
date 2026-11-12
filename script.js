@@ -11,7 +11,7 @@ const conversation = [
   {
     role: "system",
     content:
-      "You are a friendly L’Oréal beauty advisor. Only answer questions about L’Oréal products, skincare, makeup, haircare, fragrance, and beauty routines. If asked about anything unrelated, politely say you can only help with L’Oréal beauty products and routines, then invite a relevant question. Be honest when you do not know a product detail. Do not diagnose skin or medical conditions; suggest consulting a qualified professional for medical concerns.",
+      "You are a friendly L’Oréal beauty advisor. Help customers with L’Oréal products, skincare, makeup, haircare, fragrance, beauty services, routines, and recommendations. If details like product availability, pricing, or local services depend on location, ask for the customer’s country or city and do not guess. Be honest when you do not know a product detail. If asked about something unrelated to beauty or L’Oréal, politely redirect to a relevant topic. Do not diagnose skin or medical conditions; suggest consulting a qualified professional for medical concerns. Use earlier messages to keep your answers relevant to the conversation.",
   },
 ];
 
@@ -30,11 +30,15 @@ function getSampleReply(question) {
   const text = question.toLowerCase();
 
   if (
-    !/(l['’]?or[eé]al|beauty|skin|skincare|makeup|hair|haircare|fragrance|perfume|routine|lipstick|mascara|shampoo|moisturizer|moisturiser|cleanser)/i.test(
+    !/(l['’]?or[eé]al|beauty|skin|skincare|makeup|hair|haircare|fragrance|perfume|routine|lipstick|mascara|shampoo|moisturizer|moisturiser|cleanser|service|salon|consultation|appointment)/i.test(
       text,
     )
   ) {
     return "I can help with L’Oréal beauty products, skincare, makeup, haircare, fragrance, and routines. What beauty question can I help with?";
+  }
+
+  if (/(dark spot|dark mark|hyperpigmentation|uneven tone)/i.test(text) && /(irritat|sensitive|burn|stinging|redness)/i.test(text)) {
+    return "For dark spots with irritated skin, keep your routine gentle for now: pause new brightening or exfoliating products, use a mild cleanser and a fragrance-free moisturizer, and wear broad-spectrum SPF 30+ each morning. Once your skin feels calm, introduce any dark-spot product one at a time, following its label and patch-testing first. If irritation is severe or doesn’t settle, ask a dermatologist or other qualified healthcare professional. I can help you explore L’Oréal options once you share your skin type and country.";
   }
 
   if (/(skin|skincare|cleanser|moistur|routine|acne)/i.test(text)) {
@@ -51,6 +55,10 @@ function getSampleReply(question) {
 
   if (/(fragrance|perfume|scent)/i.test(text)) {
     return "I can help you explore fragrance. Do you prefer fresh, floral, warm, or woody scents? If you can, try a fragrance on skin and give it time to develop before deciding.";
+  }
+
+  if (/(service|salon|consultation|appointment|in.store|store)/i.test(text)) {
+    return "I can help with questions about L’Oréal beauty services, but availability can vary by location. What country or city are you in, and what service are you looking for? Check your local L’Oréal website or store for current service details.";
   }
 
   return "I can help you explore L’Oréal beauty products and routines. Tell me which category you’re interested in—skincare, makeup, haircare, or fragrance—and what you’re looking for.";
