@@ -8,6 +8,11 @@ body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
   color: #171717;
   background: #fce4ec;
+  background-image: url("img/beauty-portrait.svg");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: min(42vw, 440px) auto;
+  background-attachment: fixed;
   min-height: 100vh;
 }
 
@@ -188,6 +193,11 @@ body {
 }
 
 @media (max-width: 520px) {
+  body {
+    background-position: right -75px bottom;
+    background-size: 75vw auto;
+  }
+
   .site-header {
     padding-top: 28px;
   }

@@ -45,7 +45,7 @@ chatForm.addEventListener("submit", async (event) => {
   if (WORKER_URL.includes("your-subdomain")) {
     replyMessage.textContent =
       "Add your class Cloudflare Worker URL to WORKER_URL in script.js to start chatting.";
-    sendBtn.disabled = false;
+    sendBtn.disabled = true;
     userInput.focus();
     return;
   }
