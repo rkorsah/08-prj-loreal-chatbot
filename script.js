@@ -2,6 +2,7 @@ const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 const sendBtn = document.getElementById("sendBtn");
+const musicToggle = document.getElementById("musicToggle");
 
 // Replace this example with the Cloudflare Worker URL provided by your class.
 const WORKER_URL = "https://loreal-chatbot.your-subdomain.workers.dev/";
@@ -14,6 +15,94 @@ const conversation = [
       "You are a friendly L’Oréal beauty advisor. Help customers with L’Oréal products, skincare, makeup, haircare, fragrance, beauty services, routines, and recommendations. If details like product availability, pricing, or local services depend on location, ask for the customer’s country or city and do not guess. Be honest when you do not know a product detail. If asked about something unrelated to beauty or L’Oréal, politely redirect to a relevant topic. Do not diagnose skin or medical conditions; suggest consulting a qualified professional for medical concerns. Use earlier messages to keep your answers relevant to the conversation.",
   },
 ];
+
+let musicContext;
+let musicGain;
+let musicTimer;
+let musicStep = 0;
+let nextMusicNoteTime = 0;
+const jazzChords = [
+  [60, 64, 67, 71],
+  [57, 60, 64, 67],
+  [62, 65, 69, 72],
+  [55, 59, 62, 65],
+];
+
+// Play a softly plucked note using the browser's built-in audio.
+function playJazzNote(note, startTime, duration, volume, sound) {
+  const oscillator = musicContext.createOscillator();
+  const noteVolume = musicContext.createGain();
+
+  oscillator.type = sound;
+  oscillator.frequency.value = 440 * 2 ** ((note - 69) / 12);
+  noteVolume.gain.setValueAtTime(0.0001, startTime);
+  noteVolume.gain.exponentialRampToValueAtTime(volume, startTime + 0.02);
+  noteVolume.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+  oscillator.connect(noteVolume);
+  noteVolume.connect(musicGain);
+  oscillator.start(startTime);
+  oscillator.stop(startTime + duration);
+}
+
+// Schedule a repeating, gentle chord progression and melody.
+function scheduleJazz() {
+  while (nextMusicNoteTime < musicContext.currentTime + 0.2) {
+    const chordNumber = Math.floor(musicStep / 8) % jazzChords.length;
+    const stepInBar = musicStep % 8;
+    const chord = jazzChords[chordNumber];
+
+    if (stepInBar === 0) {
+      chord.forEach((note) =>
+        playJazzNote(note, nextMusicNoteTime, 1.8, 0.012, "triangle"),
+      );
+    }
+
+    if (stepInBar === 0 || stepInBar === 4) {
+      playJazzNote(chord[0] - 24, nextMusicNoteTime, 0.7, 0.07, "sine");
+    }
+
+    if (stepInBar % 2 === 0) {
+      const melodyNote = chord[stepInBar / 2] + 12;
+      playJazzNote(melodyNote, nextMusicNoteTime, 0.35, 0.035, "triangle");
+    }
+
+    musicStep += 1;
+    nextMusicNoteTime += 0.3;
+  }
+}
+
+musicToggle.addEventListener("click", async () => {
+  if (!musicTimer) {
+    if (!window.AudioContext) {
+      musicToggle.textContent = "Background music unavailable";
+      musicToggle.disabled = true;
+      return;
+    }
+
+    musicContext ??= new window.AudioContext();
+    if (!musicGain) {
+      musicGain = musicContext.createGain();
+      musicGain.gain.value = 0.4;
+      musicGain.connect(musicContext.destination);
+    }
+
+    await musicContext.resume();
+    musicStep = 0;
+    nextMusicNoteTime = musicContext.currentTime + 0.05;
+    musicGain.gain.setTargetAtTime(0.4, musicContext.currentTime, 0.08);
+    musicTimer = window.setInterval(scheduleJazz, 100);
+    musicToggle.textContent = "Pause soft jazz";
+    musicToggle.setAttribute("aria-pressed", "true");
+    return;
+  }
+
+  window.clearInterval(musicTimer);
+  musicTimer = undefined;
+  musicGain.gain.setTargetAtTime(0.0001, musicContext.currentTime, 0.05);
+  musicToggle.textContent = "Play soft jazz";
+  musicToggle.setAttribute("aria-pressed", "false");
+});
 
 // Add messages as text so user input is displayed safely.
 function addMessage(text, sender) {
