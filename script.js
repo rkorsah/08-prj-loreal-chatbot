@@ -25,6 +25,37 @@ function addMessage(text, sender) {
   return message;
 }
 
+// Give a helpful sample answer until the deployed Worker URL is added.
+function getSampleReply(question) {
+  const text = question.toLowerCase();
+
+  if (
+    !/(l['’]?or[eé]al|beauty|skin|skincare|makeup|hair|haircare|fragrance|perfume|routine|lipstick|mascara|shampoo|moisturizer|moisturiser|cleanser)/i.test(
+      text,
+    )
+  ) {
+    return "I can help with L’Oréal beauty products, skincare, makeup, haircare, fragrance, and routines. What beauty question can I help with?";
+  }
+
+  if (/(skin|skincare|cleanser|moistur|routine|acne)/i.test(text)) {
+    return "A simple skincare routine is: gentle cleanser, moisturizer, and broad-spectrum sunscreen in the morning. Introduce new products one at a time and follow their labels. Tell me your skin type and what you’d like help with for more tailored L’Oréal product suggestions.";
+  }
+
+  if (/(makeup|lipstick|mascara|foundation|concealer)/i.test(text)) {
+    return "I can help you explore L’Oréal makeup. What product are you looking for, and what finish or shade do you prefer? For foundation or concealer, comparing shades in natural light can help you find a closer match.";
+  }
+
+  if (/(hair|haircare|shampoo|conditioner|frizz|curl)/i.test(text)) {
+    return "For a hair routine, choose shampoo and conditioner based on your hair and scalp needs, and consider a heat protectant if you use hot tools. What is your hair type and what would you like to address?";
+  }
+
+  if (/(fragrance|perfume|scent)/i.test(text)) {
+    return "I can help you explore fragrance. Do you prefer fresh, floral, warm, or woody scents? If you can, try a fragrance on skin and give it time to develop before deciding.";
+  }
+
+  return "I can help you explore L’Oréal beauty products and routines. Tell me which category you’re interested in—skincare, makeup, haircare, or fragrance—and what you’re looking for.";
+}
+
 chatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (sendBtn.disabled) {
@@ -43,9 +74,8 @@ chatForm.addEventListener("submit", async (event) => {
   const replyMessage = addMessage("Thinking…", "ai");
 
   if (WORKER_URL.includes("your-subdomain")) {
-    replyMessage.textContent =
-      "Add your class Cloudflare Worker URL to WORKER_URL in script.js to start chatting.";
-    sendBtn.disabled = true;
+    replyMessage.textContent = getSampleReply(question);
+    sendBtn.disabled = false;
     userInput.focus();
     return;
   }
