@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat Assistant</title>
+    <title>L’Oréal Beauty Advisor</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -17,45 +17,52 @@
 
   <body>
     <div class="page-wrapper">
-      <!------- Header / Branding ------->
       <header class="site-header">
-        <h1 class="site-title">Smart Product Advisor</h1>
+        <img
+          class="brand-logo"
+          src="img/loreal-logo.png"
+          alt="L’Oréal Paris"
+          width="306"
+          height="42"
+        />
+        <p class="brand-eyebrow">BEAUTY TECH</p>
+        <h1 class="site-title">Your Beauty Advisor</h1>
+        <p class="site-description">
+          Discover L’Oréal products and build a routine that feels like you.
+        </p>
       </header>
 
-      <!------- Chat Area ------->
       <main>
         <section class="chatbox">
+          <h2 class="visually-hidden">Chat with your beauty advisor</h2>
           <div id="chatWindow" class="chat-window">
-            <!-- messages will be appended here via JS -->
+            <p class="welcome-message">
+              Hello! Ask me about L’Oréal products, skincare, makeup, haircare,
+              fragrance, or a beauty routine.
+            </p>
           </div>
 
           <form id="chatForm" class="chat-form">
-            <label for="userInput" class="visually-hidden">Message</label>
+            <label for="userInput" class="visually-hidden">Your question</label>
             <input
               id="userInput"
               name="userInput"
               type="text"
-              placeholder="Ask me about products or routines…"
+              placeholder="Ask a beauty question…"
               autocomplete="off"
               required
             />
             <button type="submit" id="sendBtn">
-              <span class="material-icons">send</span>
+              <span class="material-icons" aria-hidden="true">send</span>
               <span class="visually-hidden">Send</span>
             </button>
           </form>
+          <p class="privacy-note">Your conversation is sent securely through our class Cloudflare Worker.</p>
         </section>
       </main>
 
-      <!------- Footer Links ------->
       <footer class="site-footer">
-        <p>&copy; 2025 Company Name. All rights reserved.</p>
-        <nav>
-          <!-- These URLs are placeholders -->
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
-        </nav>
+        <p>Because you’re worth it.</p>
       </footer>
     </div>
 
